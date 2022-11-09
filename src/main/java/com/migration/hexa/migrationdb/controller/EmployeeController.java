@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/employee")
@@ -16,7 +17,17 @@ public class EmployeeController {
     EmployeeRepository employeeRepository;
 
     @GetMapping(path = "/getAllEmployees")
-    public List<String> getAllEmployees(){
+    public List<Map<String, Object>> getAllEmployees(){
         return employeeRepository.getAllEmployees();
+    }
+
+    @GetMapping(path = "/getEmployeeMetadata")
+    public List<Map<String, Object>> getEmployeeMetada(){
+        return employeeRepository.getMetadata();
+    }
+
+    @GetMapping(path = "/getEmployee")
+    public Map<String, List<Map<String, Object>>> getEmployee(){
+        return employeeRepository.getEmployee();
     }
 }
