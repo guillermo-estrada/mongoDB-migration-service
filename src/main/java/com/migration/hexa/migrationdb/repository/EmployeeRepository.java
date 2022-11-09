@@ -15,18 +15,14 @@ public class EmployeeRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-    public List<Map<String, Object>> getAllEmployees(){
-        return jdbcTemplate.queryForList("SELECT * FROM employee");
-    }
 
-    public List<Map<String, Object>> getMetadata(){
-        return jdbcTemplate.queryForList("select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = 'employee'");
-    }
-
-    public Map<String, List<Map<String, Object>>> getEmployee(){
+    public Map<String, List<Map<String, Object>>> getInformation(){
         Map<String, List<Map<String, Object>>> tableInformation = new HashMap<>();
-        tableInformation.put("EmployeeInformation", jdbcTemplate.queryForList("SELECT * FROM employee"));
-        tableInformation.put("TableInformation", jdbcTemplate.queryForList("select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = 'employee'"));
+        tableInformation.put("table1Content", jdbcTemplate.queryForList("SELECT * FROM employee"));
+        tableInformation.put("table1Metadata", jdbcTemplate.queryForList("select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = 'employee'"));
+
+        tableInformation.put("table2Content", jdbcTemplate.queryForList("SELECT * FROM department"));
+        tableInformation.put("table2Metadata", jdbcTemplate.queryForList("select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = 'department'"));
 
         return tableInformation;
     }

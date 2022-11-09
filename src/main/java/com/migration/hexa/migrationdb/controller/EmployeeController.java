@@ -16,18 +16,8 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @GetMapping(path = "/getAllEmployees")
-    public List<Map<String, Object>> getAllEmployees(){
-        return employeeRepository.getAllEmployees();
-    }
-
-    @GetMapping(path = "/getEmployeeMetadata")
-    public List<Map<String, Object>> getEmployeeMetada(){
-        return employeeRepository.getMetadata();
-    }
-
-    @GetMapping(path = "/getEmployee")
-    public Map<String, List<Map<String, Object>>> getEmployee(){
-        return employeeRepository.getEmployee();
+    @GetMapping(path = "/getInformation")
+    public Map<String, List<Map<String, Object>>> getInformation(){
+        return employeeRepository.getInformation();
     }
 }
