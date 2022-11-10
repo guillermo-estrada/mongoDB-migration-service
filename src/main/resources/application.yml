@@ -16,6 +16,14 @@ spring:
     password: Password123
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  #ActiveMQ Configuration
+  activemq:
+    broker-url: tcp://localhost:61616
+    username: admin
+    password: admin
+    packages:
+      trust-all: true
+
 #Active profile
   profiles:
     active: development

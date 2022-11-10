@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/employee")
+@RequestMapping(path = "/migration")
 public class DatabaseController {
 
     @Autowired
     DatabaseRepository databaseRepository;
 
-    @GetMapping(path = "/getInformation")
-    public Map<String, List<Map<String, Object>>> getInformation(){
-        return databaseRepository.getInformation();
+    @GetMapping(path = "/getData")
+    public Map<String, List<Map<String, Object>>> getData(){
+        return databaseRepository.getData();
     }
 }
