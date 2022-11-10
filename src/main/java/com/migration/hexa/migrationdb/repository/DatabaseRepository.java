@@ -14,7 +14,7 @@ import java.util.Map;
 @Repository
 public class DatabaseRepository {
 
-    Logger log = LoggerFactory.getLogger(DatabaseRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseRepository.class);
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -22,7 +22,7 @@ public class DatabaseRepository {
     @Autowired
     DatabaseConfig databaseConfig;
 
-    public Map<String, List<Map<String, Object>>> getInformation(){
+    public Map<String, List<Map<String, Object>>> getData(){
         Map<String, List<Map<String, Object>>> tableInformation = new HashMap<>();
         tableInformation.put("table1Content", jdbcTemplate.queryForList("SELECT * FROM " + this.databaseConfig.getTable1()));
         tableInformation.put("table1Metadata", jdbcTemplate.queryForList("select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + this.databaseConfig.getTable1() + "'"));
