@@ -1,6 +1,6 @@
 package com.migration.hexa.migrationdb.controller;
 
-import com.migration.hexa.migrationdb.repository.EmployeeRepository;
+import com.migration.hexa.migrationdb.repository.DatabaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,13 +11,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/employee")
-public class EmployeeController {
+public class DatabaseController {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    DatabaseRepository databaseRepository;
 
     @GetMapping(path = "/getInformation")
     public Map<String, List<Map<String, Object>>> getInformation(){
-        return employeeRepository.getInformation();
+        return databaseRepository.getInformation();
     }
 }

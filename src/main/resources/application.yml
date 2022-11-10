@@ -5,7 +5,13 @@ server:
 #Database Configuration
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/hexaware
+    database: hexaware
+    table1: department
+    table2: employee
+    #database: jails
+    #table1: jail
+    #table2: prisoner
+    url: jdbc:mysql://localhost:3306/${spring.datasource.database}
     username: root
     password: Password123
     driver-class-name: com.mysql.cj.jdbc.Driver
