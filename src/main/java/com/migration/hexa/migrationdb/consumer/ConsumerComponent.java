@@ -1,6 +1,5 @@
 package com.migration.hexa.migrationdb.consumer;
 
-import com.migration.hexa.migrationdb.model.SystemMessage;
 import com.migration.hexa.migrationdb.repository.DatabaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

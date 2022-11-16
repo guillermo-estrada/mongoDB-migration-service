@@ -24,6 +24,12 @@ spring:
     packages:
       trust-all: true
 
+  #MongoDB configurations
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hexaware
+      database: hexaware
+
 #Active profile
   profiles:
     active: development
