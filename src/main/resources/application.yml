@@ -5,15 +5,15 @@ server:
 #Database Configuration
 spring:
   datasource:
-    database: hexaware
-    table1: department
-    table2: employee
-    #database: jails
-    #table1: jail
-    #table2: prisoner
+    #database: hexaware
+    #table1: department
+    #table2: employee
+    database: jails
+    table1: jail
+    table2: prisoner
     url: jdbc:mysql://localhost:3306/${spring.datasource.database}
     username: root
-    password: Password123
+    password: s3rv3r
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   #ActiveMQ Configuration
