@@ -30,6 +30,7 @@ public class DatabaseController {
             ObjectMapper objectMapper = new ObjectMapper();
 
             String contentJson = objectMapper.writeValueAsString(databaseRepository.getData());
+
             jmsTemplate.convertAndSend("mongo-migrator_queue", databaseRepository.getData());
             return new ResponseEntity<>(contentJson, HttpStatus.OK);
         } catch (Exception e){

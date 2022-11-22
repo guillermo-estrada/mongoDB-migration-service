@@ -5,15 +5,15 @@ server:
 #Database Configuration
 spring:
   datasource:
-    #database: hexaware
-    #table1: department
-    #table2: employee
-    database: jails
-    table1: jail
-    table2: prisoner
+    database: Hexaware
+    table1: department
+    table2: employee
+    #database: jails
+    #table1: jail
+    #table2: prisoner
     url: jdbc:mysql://localhost:3306/${spring.datasource.database}
     username: root
-    password: s3rv3r
+    password: Password123
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   #ActiveMQ Configuration
@@ -27,8 +27,8 @@ spring:
   #MongoDB configurations
   data:
     mongodb:
-      uri: mongodb://localhost:27017/hexaware
-      database: hexaware
+      uri: mongodb://localhost:27017/${spring.datasource.database}
+      database: ${spring.datasource.database}
 
 #Active profile
   profiles:
