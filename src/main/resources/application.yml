@@ -5,7 +5,7 @@ server:
 #Database Configuration
 spring:
   datasource:
-    database: hexaware
+    database: Hexaware
     table1: department
     table2: employee
     #database: jails
@@ -23,6 +23,12 @@ spring:
     password: admin
     packages:
       trust-all: true
+
+  #MongoDB configurations
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/${spring.datasource.database}
+      database: ${spring.datasource.database}
 
 #Active profile
   profiles:
