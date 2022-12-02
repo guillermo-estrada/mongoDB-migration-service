@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.migration.hexa'
@@ -19,19 +20,57 @@ repositories {
 }
 
 dependencies {
+//	Spring Boot Starter Web for REST API creation
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+//	JDBC and MySQL
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java'
+
+//	ActiveMQ dependency
 	implementation 'org.springframework.boot:spring-boot-starter-activemq'
+
+//	MongoDB dependency
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+//	Jackson core for JSON Binding
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+//	Lombok dependency for annotation processing
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+
+//	DevTools dependency
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+//	Spring Boot dependency for test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+}
+
+jacoco {
+	toolVersion = "0.8.5"
+	reportsDir = file("$buildDir/jacoco")
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 1
+			}
+		}
+	}
 }
