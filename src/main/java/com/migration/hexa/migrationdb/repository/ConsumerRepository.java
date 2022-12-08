@@ -25,7 +25,7 @@ public class ConsumerRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public List<Map<String, Object>> transformationProcess(Map<String, List<Map<String, Object>>> content) {
+    public List<Map<String, Object>> manyToOneTransformation(Map<String, List<Map<String, Object>>> content) {
         List<Map<String, Object>> table1 = content.get("table1Content");
         List<Map<String, Object>> table2 = content.get("table2Content");
         List<Map<String, Object>> keys1 = content.get("table1Keys");
@@ -95,6 +95,17 @@ public class ConsumerRepository {
             log.info(table2Name + " list is: {}", employeeList);
         }
         return table1;
+    }
+
+    public List<Map<String, Object>> oneToManyTransformation(Map<String, List<Map<String, Object>>> content) {
+        //ToDO: inverted Logic from above
+        return null;
+    }
+
+    //ToDO: check this method
+    public List<Map<String, Object>> singleTablesTransformation(Map<String, List<Map<String, Object>>> content){
+        //ToDO: create Logic
+        return null;
     }
 
     public void insertData(List<Map<String, Object>> resultList) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class DatabaseRepository {
     @Autowired
     DatabaseConfig databaseConfig;
 
-    public Map<String, List<Map<String, Object>>> getData(){
+    public Map<String, List<Map<String, Object>>> getTwoTableRelationshipData() {
 
         Map<String, List<Map<String, Object>>> tableInformation = new HashMap<>();
         tableInformation.put("table1Content", jdbcTemplate.queryForList("SELECT * FROM " + this.databaseConfig.getTable1()));
@@ -37,5 +38,12 @@ public class DatabaseRepository {
 
         return tableInformation;
 
+    }
+
+    public Map<String, List<Map<String, Object>>> getNoRelationshipTableData() {
+        Map<String, List<Map<String, Object>>> tableInformation = new HashMap<>();
+        tableInformation.put("singleTablesData", jdbcTemplate.queryForList("SHOW TABLES FROM " + this.databaseConfig.getDatabase()));
+
+        return tableInformation;
     }
 }
