@@ -33,9 +33,6 @@ dependencies {
 //	MongoDB dependency
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-//	Sybase dependency
-	implementation 'com.sybase.jconnect:jconn4'
-
 //	Jackson core for JSON Binding
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
