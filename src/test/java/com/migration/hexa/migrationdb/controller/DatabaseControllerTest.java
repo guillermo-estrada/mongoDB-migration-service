@@ -1,5 +1,6 @@
 package com.migration.hexa.migrationdb.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.migration.hexa.migrationdb.repository.DatabaseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +33,7 @@ public class DatabaseControllerTest {
 
     @Test
     @DisplayName("Test Get Data REST API")
-    public void testGetDataSuccessfully() throws Exception {
+    void testGetDataSuccessfully() throws Exception {
         Map<String, Object> table1emp = new HashMap<>();
         table1emp.put("idEmployee", 1);
         table1emp.put("FirstName", "Guillermo");
@@ -56,10 +57,13 @@ public class DatabaseControllerTest {
 
         Mockito.doNothing().when(jmsTemplate).convertAndSend(Mockito.anyString(), Mockito.any(Object.class));
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String contentJson = objectMapper.writeValueAsString(data);
+
         ResponseEntity<String> result = databaseController.getData();
-        System.out.println(result);
 
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+        Assertions.assertEquals(contentJson, result.getBody());
     }
 
     @Test
