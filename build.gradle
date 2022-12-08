@@ -54,6 +54,16 @@ test {
 
 jacocoTestReport {
 	dependsOn test
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/migration/hexa/migrationdb/MigrationdbApplication.class",
+					"com/migration/hexa/migrationdb/consumer/ConsumerComponent.class"
+//					"**/config/*"
+			])
+		}))
+	}
 }
 
 jacoco {

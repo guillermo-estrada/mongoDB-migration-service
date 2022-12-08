@@ -23,15 +23,29 @@ public class DatabaseController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @GetMapping(path = "/getData")
-    public ResponseEntity<String> getData(){
+    @GetMapping(path = "/TwoTableOneToManyMigration")
+    public ResponseEntity<String> twoTableManyToOneMigration(){
 
         try{
             ObjectMapper objectMapper = new ObjectMapper();
 
-            String contentJson = objectMapper.writeValueAsString(databaseRepository.getData());
+            String contentJson = objectMapper.writeValueAsString(databaseRepository.getTwoTableRelationshipData());
 
-            jmsTemplate.convertAndSend("mongo-migrator_queue", databaseRepository.getData());
+            jmsTemplate.convertAndSend("mongo-migrator_queue", databaseRepository.getTwoTableRelationshipData());
+            return new ResponseEntity<>(contentJson, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/TwoTableManyToOneMigration")
+    public ResponseEntity<String> twoTableOneToManyMigration(){
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String contentJson = objectMapper.writeValueAsString(databaseRepository.getTwoTableRelationshipData());
+
+            jmsTemplate.convertAndSend("mongo-migrator_queue2", databaseRepository.getTwoTableRelationshipData());
             return new ResponseEntity<>(contentJson, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -20,11 +20,20 @@ public class ConsumerComponent {
     ConsumerRepository consumerRepository;
 
     @JmsListener(destination = "mongo-migrator_queue")
-    public void messageListener(Map<String, List<Map<String, Object>>> content) {
+    public void manyToOneListener(Map<String, List<Map<String, Object>>> content) {
 
         log.info("Message Received: {}", content);
 
-        consumerRepository.insertData(consumerRepository.transformationProcess(content));
-
+        consumerRepository.insertData(consumerRepository.manyToOneTransformation(content));
     }
+
+    @JmsListener(destination = "mongo-migrator_queue2")
+    public void oneToManyListener(Map<String, List<Map<String, Object>>> content) {
+
+        log.info("Message Received: {}", content);
+
+        consumerRepository.insertData(consumerRepository.oneToManyTransformation(content));
+    }
+
+
 }
