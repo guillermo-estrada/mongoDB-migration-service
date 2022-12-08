@@ -53,14 +53,14 @@ public class DatabaseControllerTest {
         data.put("table1Content", table1Content);
         data.put("table2Content", table2Content);
 
-        Mockito.when(databaseRepository.getData()).thenReturn(data);
+        Mockito.when(databaseRepository.getTwoTableRelationshipData()).thenReturn(data);
 
         Mockito.doNothing().when(jmsTemplate).convertAndSend(Mockito.anyString(), Mockito.any(Object.class));
 
         ObjectMapper objectMapper = new ObjectMapper();
         String contentJson = objectMapper.writeValueAsString(data);
 
-        ResponseEntity<String> result = databaseController.getData();
+        ResponseEntity<String> result = databaseController.twoTableManyToOneMigration();
 
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assertions.assertEquals(contentJson, result.getBody());
@@ -69,8 +69,8 @@ public class DatabaseControllerTest {
     @Test
     @DisplayName("Error Getting Data in REST API")
     public void testGetDataException(){
-        Mockito.when(databaseRepository.getData()).thenThrow(NullPointerException.class);
-        ResponseEntity<String> result = databaseController.getData();
+        Mockito.when(databaseRepository.getTwoTableRelationshipData()).thenThrow(NullPointerException.class);
+        ResponseEntity<String> result = databaseController.twoTableManyToOneMigration();
 
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
     }

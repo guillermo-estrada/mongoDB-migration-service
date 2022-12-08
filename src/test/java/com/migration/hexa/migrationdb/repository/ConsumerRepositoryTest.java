@@ -78,7 +78,7 @@ public class ConsumerRepositoryTest {
         map.put("table1Keys", table1Keys);
         map.put("table2Keys", table2Keys);
 
-        List<Map<String, Object>> result = consumerRepository.transformationProcess(map);
+        List<Map<String, Object>> result = consumerRepository.manyToOneTransformation(map);
 
         // Obtain the embedded table as a result of the transformation
         // Note: ObjectMapper is used to avoid an unchecked cast warning.
