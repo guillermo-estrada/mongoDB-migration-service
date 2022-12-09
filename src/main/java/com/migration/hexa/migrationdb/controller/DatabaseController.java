@@ -51,4 +51,18 @@ public class DatabaseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(path = "/noRelationshipTablesMigration")
+    public ResponseEntity<String> noRelationshipTablesMigration(){
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String contentJson = objectMapper.writeValueAsString(databaseRepository.getNoRelationshipTableData());
+
+            jmsTemplate.convertAndSend("mongo-migrator_queue2", databaseRepository.getNoRelationshipTableData());
+            return new ResponseEntity<>(contentJson, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
