@@ -98,8 +98,79 @@ public class ConsumerRepository {
     }
 
     public List<Map<String, Object>> oneToManyTransformation(Map<String, List<Map<String, Object>>> content) {
-        //ToDO: inverted Logic from above
-        return null;
+
+        List<Map<String, Object>> table1 = content.get("table1Content");
+        List<Map<String, Object>> table2 = content.get("table2Content");
+        List<Map<String, Object>> keys1 = content.get("table1Keys");
+        List<Map<String, Object>> keys2 = content.get("table2Keys");
+
+        String table1PrimaryKeyColumnName;
+        String table2PrimaryKeyColumnName;
+        String table2ForeignKeyColumnName;
+        Map<String, Object> table2RecordMap = new HashMap<>();
+
+        log.info("Table 1 info {}", table1);
+        log.info("Table 2 info {}", table2);
+        log.info("Table 1 keys {}", keys1.get(0).get("Column_name"));
+        log.info("Table 2 keys {}", keys2.get(0).get("Column_name"));
+        log.info("Table 2 keys {}", keys2.get(1).get("Column_name"));
+
+        // Obtain the table 1 name in order to make it the name of the array inside table 1
+        String table1Name = this.databaseConfig.getTable1();
+
+        // Obtain the table 2 name in order to make it the name of the array inside table 1
+        String table2Name = this.databaseConfig.getTable2();
+
+        // Get the primary key name from table 1
+        table1PrimaryKeyColumnName = keys1.get(0).get("Column_name").toString();
+        log.info("The primary key name in table 1 is: {}", table1PrimaryKeyColumnName);
+
+        // Get the primary key name from table 2
+        table2PrimaryKeyColumnName = keys2.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table1Name + " is: {}", table2PrimaryKeyColumnName);
+
+        // Get the foreign key name from table 2
+        table2ForeignKeyColumnName = keys2.get(1).get("Column_name").toString();
+        log.info("The foreign key name in table 2 is: {}", table2ForeignKeyColumnName);
+
+        // Initialize empty map arrays inside each table2 row with table's 1 name
+        log.info("Assigning empty maps to table 2 with name: {}", keys2.get(0).get("Table"));
+
+        // Iterate over array 2 to retrieve it's values and put each one of them inside table 1 array of maps,
+        // according to it's foreign key value
+        for (int i = 0; i < table2.size(); i++) {
+            // Get the value of the foreign key in table 2, to match it with its correspondant table 1 row
+            String foreignKeyValue = table2.get(i).get(table2ForeignKeyColumnName).toString();
+            for (Map<String, Object> table1Row : table1) {
+
+                // Obtain table row id value, then check if its the same as the foreign key value
+                if (foreignKeyValue.equals(table1Row.get(table1PrimaryKeyColumnName).toString())) {
+                    log.info("Match between " + table2Name + " and " + table1Name + " has been found");
+
+                    // Move the information from the table 1 record to table 2 record.
+                    Map<String, Object> newTable1Record = new HashMap<>();
+
+                    // Get Data for the table 1 record and put it inside newTable1Record, except for the id
+                    for (Map.Entry<String, Object> entry : table1Row.entrySet()) {
+                        if (!entry.getKey().equals(table1PrimaryKeyColumnName)) {
+                            newTable1Record.put(entry.getKey(), entry.getValue());
+                        }
+                    }
+                    // Add the new record to table 2
+                    table2.get(i).put(table1Name, newTable1Record);
+                }
+            }
+            log.info(table2Name + " list is: {}", table2RecordMap);
+        }
+
+        // Keys deletion
+        for (Map<String, Object> tableRow : table2) {
+            // tableRow.put(table1Name, new HashMap<String, Object>());
+            tableRow.remove(table2ForeignKeyColumnName);
+            tableRow.remove(table2PrimaryKeyColumnName);
+        }
+
+        return table2;
     }
 
     //ToDO: check this method
@@ -108,7 +179,7 @@ public class ConsumerRepository {
         return null;
     }
 
-    public void insertData(List<Map<String, Object>> resultList) {
+    public void insertData(List<Map<String, Object>> resultList, String collectionName) {
         //Print the list to see the result
         log.info("Result List is: {}", resultList);
 
@@ -121,7 +192,7 @@ public class ConsumerRepository {
                 log.info("Document inserted: {}", contentJson);
 
                 Document doc = Document.parse(contentJson);
-                mongoTemplate.insert(doc, this.databaseConfig.getTable1());
+                mongoTemplate.insert(doc, collectionName);
 
             } catch (Exception e) {
                 log.info("Error: {}", e.getMessage());
