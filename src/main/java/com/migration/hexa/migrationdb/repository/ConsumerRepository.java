@@ -199,4 +199,30 @@ public class ConsumerRepository {
             }
         }
     }
+
+    public void insertSingleTableData(Map<String, List<Map<String, Object>>> resultList) {
+
+        for(Map.Entry<String, List<Map<String, Object>>> entry : resultList.entrySet()) {
+            List<Map<String, Object>> contentTable = entry.getValue();
+            String collection = entry.getKey();
+            log.info("Collection: {}", collection);
+            log.info("Content {}", contentTable);
+
+            for (Map<String, Object> document : contentTable) {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+
+                    String contentJson = objectMapper.writeValueAsString(document);
+                    log.info("Document inserted: {}", contentJson);
+
+                    Document doc = Document.parse(contentJson);
+                    mongoTemplate.insert(doc, collection);
+
+                } catch (Exception e) {
+                    log.info("Error: {}", e.getMessage());
+                }
+            }
+
+        }
+    }
 }
