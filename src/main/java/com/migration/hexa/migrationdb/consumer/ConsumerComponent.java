@@ -36,6 +36,14 @@ public class ConsumerComponent {
 
         log.info("Message Received: {}", content);
 
+        consumerRepository.insertData(consumerRepository.oneToManyTransformation(content), this.databaseConfig.getTable1());
+    }
+
+    @JmsListener(destination = "mongo-migrator_queue3")
+    public void noRelationshipListener(Map<String, List<Map<String, Object>>> content) {
+
+        log.info("Message Received: {}", content);
+
         consumerRepository.insertSingleTableData(content);
     }
 

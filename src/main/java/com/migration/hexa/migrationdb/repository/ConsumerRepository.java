@@ -34,7 +34,7 @@ public class ConsumerRepository {
         String table1PrimaryKeyColumnName;
         String table2PrimaryKeyColumnName;
         String table2ForeignKeyColumnName;
-        ArrayList<Map<String, Object>> employeeList = new ArrayList<>();
+        List<Map<String, Object>> employeeList = new ArrayList<>();
 
         log.info("Table 1 info {}", table1);
         log.info("Table 2 info {}", table2);
@@ -50,18 +50,18 @@ public class ConsumerRepository {
 
         // Get the primary key name from table 1
         table1PrimaryKeyColumnName = keys1.get(0).get("Column_name").toString();
-        log.info("The primary key name in table 1 is: {}", table1PrimaryKeyColumnName);
+        log.info("The primary key name in " + table1Name + " is: {}", table1PrimaryKeyColumnName);
 
         // Get the primary key name from table 2
         table2PrimaryKeyColumnName = keys2.get(0).get("Column_name").toString();
-        log.info("The primary key name in " + table1Name + " is: {}", table2PrimaryKeyColumnName);
+        log.info("The primary key name in " + table2Name + " is: {}", table2PrimaryKeyColumnName);
 
         // Get the foreign key name from table 2
         table2ForeignKeyColumnName = keys2.get(1).get("Column_name").toString();
-        log.info("The foreign key name in table 2 is: {}", table2ForeignKeyColumnName);
+        log.info("The foreign key name in " + table2Name + " is: {}", table2ForeignKeyColumnName);
 
         // Initialize empty map arrays inside each table1 row with table's 2 name
-        log.info("Assigning empty maps to table 2 with name: {}", keys2.get(0).get("Table"));
+        log.info("Assigning empty maps to " + table2Name + " with name: {}", keys2.get(0).get("Table"));
 
         for (Map<String, Object> tableRow : table1) {
             tableRow.put(table2Name, new ArrayList<Map<String, Object>>());
@@ -87,7 +87,7 @@ public class ConsumerRepository {
                         }
                     }
                     //TODO: check this line
-                    employeeList = (ArrayList<Map<String, Object>>) table1Row.get(table2Name);
+                    employeeList = (List<Map<String, Object>>) table1Row.get(table2Name);
 
                     employeeList.add(newEmployee);
                 }
@@ -123,18 +123,18 @@ public class ConsumerRepository {
 
         // Get the primary key name from table 1
         table1PrimaryKeyColumnName = keys1.get(0).get("Column_name").toString();
-        log.info("The primary key name in table 1 is: {}", table1PrimaryKeyColumnName);
+        log.info("The primary key name in " + table1Name + " is: {}", table1PrimaryKeyColumnName);
 
         // Get the primary key name from table 2
         table2PrimaryKeyColumnName = keys2.get(0).get("Column_name").toString();
-        log.info("The primary key name in " + table1Name + " is: {}", table2PrimaryKeyColumnName);
+        log.info("The primary key name in " + table2Name + " is: {}", table2PrimaryKeyColumnName);
 
         // Get the foreign key name from table 2
         table2ForeignKeyColumnName = keys2.get(1).get("Column_name").toString();
-        log.info("The foreign key name in table 2 is: {}", table2ForeignKeyColumnName);
+        log.info("The foreign key name in " + table2Name + " is: {}", table2ForeignKeyColumnName);
 
         // Initialize empty map arrays inside each table2 row with table's 1 name
-        log.info("Assigning empty maps to table 2 with name: {}", keys2.get(0).get("Table"));
+        log.info("Assigning empty maps to " + table2Name + " with name: {}", keys2.get(0).get("Table"));
 
         // Iterate over array 2 to retrieve it's values and put each one of them inside table 1 array of maps,
         // according to it's foreign key value
@@ -173,11 +173,6 @@ public class ConsumerRepository {
         return table2;
     }
 
-    //ToDO: check this method
-    public List<Map<String, Object>> singleTablesTransformation(Map<String, List<Map<String, Object>>> content){
-        //ToDO: create Logic
-        return null;
-    }
 
     public void insertData(List<Map<String, Object>> resultList, String collectionName) {
         //Print the list to see the result
