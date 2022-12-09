@@ -14,6 +14,7 @@ spring:
 #    database: world
 #    table1: country
 #    table2: citizen
+#    database: JailDepartmentOfTheWorld
     url: jdbc:mysql://localhost:3306/${spring.datasource.database}
     username: root
     password: Password123

@@ -32,7 +32,7 @@ public class ConsumerComponent {
 
         log.info("Message Received: {}", content);
 
-        consumerRepository.insertData(consumerRepository.oneToManyTransformation(content));
+        consumerRepository.insertSingleTableData(content);
     }
 
 

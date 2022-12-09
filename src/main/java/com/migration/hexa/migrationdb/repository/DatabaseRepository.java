@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +40,14 @@ public class DatabaseRepository {
     }
 
     public Map<String, List<Map<String, Object>>> getNoRelationshipTableData() {
-        Map<String, List<Map<String, Object>>> tableInformation = new HashMap<>();
-        tableInformation.put("singleTablesData", jdbcTemplate.queryForList("SHOW TABLES FROM " + this.databaseConfig.getDatabase()));
+        Map<String, List<Map<String, Object>>> databaseTables = new HashMap<>();
+        List<Map<String, Object>> tablesData = jdbcTemplate.queryForList("SHOW TABLES FROM " + this.databaseConfig.getDatabase());
 
-        return tableInformation;
+        for (Map<String, Object> tableRow : tablesData) {
+            String actualTable = (String) tableRow.get("Tables_in_" + this.databaseConfig.getDatabase());
+            databaseTables.put(actualTable, jdbcTemplate.queryForList("SELECT * FROM " + actualTable));
+        }
+
+        return databaseTables;
     }
 }
