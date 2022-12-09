@@ -1,5 +1,6 @@
 package com.migration.hexa.migrationdb.consumer;
 
+import com.migration.hexa.migrationdb.config.DatabaseConfig;
 import com.migration.hexa.migrationdb.repository.ConsumerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,15 @@ public class ConsumerComponent {
     @Autowired
     ConsumerRepository consumerRepository;
 
+    @Autowired
+    DatabaseConfig databaseConfig;
+
     @JmsListener(destination = "mongo-migrator_queue")
     public void manyToOneListener(Map<String, List<Map<String, Object>>> content) {
 
         log.info("Message Received: {}", content);
 
-        consumerRepository.insertData(consumerRepository.manyToOneTransformation(content));
+        consumerRepository.insertData(consumerRepository.manyToOneTransformation(content), this.databaseConfig.getTable1());
     }
 
     @JmsListener(destination = "mongo-migrator_queue2")

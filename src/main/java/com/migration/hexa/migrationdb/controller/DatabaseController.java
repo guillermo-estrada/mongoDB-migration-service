@@ -23,7 +23,7 @@ public class DatabaseController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @GetMapping(path = "/TwoTableOneToManyMigration")
+    @GetMapping(path = "/TwoTableManyToOneMigration")
     public ResponseEntity<String> twoTableManyToOneMigration(){
 
         try{
@@ -38,7 +38,7 @@ public class DatabaseController {
         }
     }
 
-    @GetMapping(path = "/TwoTableManyToOneMigration")
+    @GetMapping(path = "/TwoTableOneToManyMigration")
     public ResponseEntity<String> twoTableOneToManyMigration(){
         try{
             ObjectMapper objectMapper = new ObjectMapper();
