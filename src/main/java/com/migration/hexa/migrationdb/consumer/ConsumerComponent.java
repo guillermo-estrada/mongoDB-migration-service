@@ -47,5 +47,21 @@ public class ConsumerComponent {
         consumerRepository.insertSingleTableData(content);
     }
 
+    @JmsListener(destination = "mongo-migrator_queue4")
+    public void manyToManyListenerV1(Map<String, List<Map<String, Object>>> content) {
+
+        log.info("Message Received: {}", content);
+
+        consumerRepository.insertData(consumerRepository.manyToManyTransformationV1(content), this.databaseConfig.getTable1());
+    }
+
+    @JmsListener(destination = "mongo-migrator_queue5")
+    public void manyToManyListenerV2(Map<String, List<Map<String, Object>>> content) {
+
+        log.info("Message Received: {}", content);
+
+        consumerRepository.insertData(consumerRepository.manyToManyTransformationV2(content), this.databaseConfig.getTable2());
+    }
+
 
 }
