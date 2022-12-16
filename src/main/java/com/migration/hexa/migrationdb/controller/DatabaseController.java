@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping(path = "/migration")
 public class DatabaseController {
@@ -26,12 +29,14 @@ public class DatabaseController {
     @GetMapping(path = "/TwoTableManyToOneMigration")
     public ResponseEntity<String> twoTableManyToOneMigration(){
 
+        Map<String, List<Map<String, Object>>> result = databaseRepository.getTwoTableRelationshipData();
+
         try{
             ObjectMapper objectMapper = new ObjectMapper();
 
-            String contentJson = objectMapper.writeValueAsString(databaseRepository.getTwoTableRelationshipData());
+            String contentJson = objectMapper.writeValueAsString(result);
 
-            jmsTemplate.convertAndSend("mongo-migrator_queue", databaseRepository.getTwoTableRelationshipData());
+            jmsTemplate.convertAndSend("mongo-migrator_queue", result);
             return new ResponseEntity<>(contentJson, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,12 +45,14 @@ public class DatabaseController {
 
     @GetMapping(path = "/TwoTableOneToManyMigration")
     public ResponseEntity<String> twoTableOneToManyMigration(){
+
+        Map<String, List<Map<String, Object>>> result = databaseRepository.getTwoTableRelationshipData();
         try{
             ObjectMapper objectMapper = new ObjectMapper();
 
-            String contentJson = objectMapper.writeValueAsString(databaseRepository.getTwoTableRelationshipData());
+            String contentJson = objectMapper.writeValueAsString(result);
 
-            jmsTemplate.convertAndSend("mongo-migrator_queue2", databaseRepository.getTwoTableRelationshipData());
+            jmsTemplate.convertAndSend("mongo-migrator_queue2", result);
             return new ResponseEntity<>(contentJson, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,6 +67,40 @@ public class DatabaseController {
             String contentJson = objectMapper.writeValueAsString(databaseRepository.getNoRelationshipTableData());
 
             jmsTemplate.convertAndSend("mongo-migrator_queue3", databaseRepository.getNoRelationshipTableData());
+            return new ResponseEntity<>(contentJson, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/ManyToManyMigration/V1")
+    public ResponseEntity<String> ManyToManyMigrationV1(){
+
+        Map<String, List<Map<String, Object>>> result = databaseRepository.getManyToManyData();
+
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String contentJson = objectMapper.writeValueAsString(result);
+
+            jmsTemplate.convertAndSend("mongo-migrator_queue4", result);
+            return new ResponseEntity<>(contentJson, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/ManyToManyMigration/V2")
+    public ResponseEntity<String> ManyToManyMigrationV2(){
+
+        Map<String, List<Map<String, Object>>> result = databaseRepository.getManyToManyData();
+
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String contentJson = objectMapper.writeValueAsString(result);
+
+            jmsTemplate.convertAndSend("mongo-migrator_queue5", result);
             return new ResponseEntity<>(contentJson, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -107,7 +107,6 @@ public class ConsumerRepository {
         String table1PrimaryKeyColumnName;
         String table2PrimaryKeyColumnName;
         String table2ForeignKeyColumnName;
-        Map<String, Object> table2RecordMap = new HashMap<>();
 
         log.info("Table 1 info {}", table1);
         log.info("Table 2 info {}", table2);
@@ -160,7 +159,6 @@ public class ConsumerRepository {
                     table2.get(i).put(table1Name, newTable1Record);
                 }
             }
-            log.info(table2Name + " list is: {}", table2RecordMap);
         }
 
         // Keys deletion
@@ -176,6 +174,7 @@ public class ConsumerRepository {
 
     public void insertData(List<Map<String, Object>> resultList, String collectionName) {
         //Print the list to see the result
+        log.info("Starting insertion");
         log.info("Result List is: {}", resultList);
 
         //
@@ -197,7 +196,7 @@ public class ConsumerRepository {
 
     public void insertSingleTableData(Map<String, List<Map<String, Object>>> resultList) {
 
-        for(Map.Entry<String, List<Map<String, Object>>> entry : resultList.entrySet()) {
+        for (Map.Entry<String, List<Map<String, Object>>> entry : resultList.entrySet()) {
             List<Map<String, Object>> contentTable = entry.getValue();
             String collection = entry.getKey();
             log.info("Collection: {}", collection);
@@ -219,5 +218,125 @@ public class ConsumerRepository {
             }
 
         }
+    }
+
+    public List<Map<String, Object>> manyToManyTransformationV1(Map<String, List<Map<String, Object>>> content) {
+
+        List<Map<String, Object>> table1 = content.get("table1Content");
+        List<Map<String, Object>> table2 = content.get("table2Content");
+        List<Map<String, Object>> table3 = content.get("table3Content");
+        List<Map<String, Object>> keys1 = content.get("table1Keys");
+        List<Map<String, Object>> keys2 = content.get("table2Keys");
+        List<Map<String, Object>> keys3 = content.get("table3Keys");
+
+        String table1PrimaryKeyColumnName;
+        String table2PrimaryKeyColumnName;
+        String table3PrimaryKeyColumnName;
+        String table3ForeignKeyColumnName;
+
+        String table1Name = this.databaseConfig.getTable1();
+        String table2Name = this.databaseConfig.getTable2();
+        String table3Name = this.databaseConfig.getTable3();
+
+        table1PrimaryKeyColumnName = keys1.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table1Name + " is: {}", table1PrimaryKeyColumnName);
+
+        table2PrimaryKeyColumnName = keys2.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table2Name + " is: {}", table2PrimaryKeyColumnName);
+
+        table3PrimaryKeyColumnName = keys3.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table3Name + " is: {}", table3PrimaryKeyColumnName);
+
+        table3ForeignKeyColumnName = keys3.get(1).get("Column_name").toString();
+        log.info("The foreign key name in " + table3Name + " is: {}", table3ForeignKeyColumnName);
+
+        for (int i = 0; i < table1.size(); i++) {
+            List<Map<String, Object>> tableRecordMap = new ArrayList<>();
+            String primaryKeyValue = table1.get(i).get(table1PrimaryKeyColumnName).toString();
+
+            for (Map<String, Object> table3Row : table3) {
+
+                if (primaryKeyValue.equals(table3Row.get(table3PrimaryKeyColumnName).toString())) {
+                    log.info("Match between " + table1Name + " and " + table2Name + " has been found");
+
+                    Map<String, Object> newTableRecord = new HashMap<>();
+
+                    for (Map.Entry<String, Object> entry : table3Row.entrySet()) {
+                        if (!entry.getKey().equals(table3PrimaryKeyColumnName)) {
+                            newTableRecord = table2.get((Integer.parseInt(entry.getValue().toString())) - 1);
+                        }
+                    }
+                    tableRecordMap.add(newTableRecord);
+                }
+                table1.get(i).put(table2Name, tableRecordMap);
+            }
+            log.info(table1Name + " list is: {}", table1);
+        }
+
+        for (Map<String, Object> tableRow : table1) {
+            tableRow.remove(table1PrimaryKeyColumnName);
+        }
+
+        return table1;
+    }
+
+    public List<Map<String, Object>> manyToManyTransformationV2(Map<String, List<Map<String, Object>>> content) {
+
+        List<Map<String, Object>> table1 = content.get("table1Content");
+        List<Map<String, Object>> table2 = content.get("table2Content");
+        List<Map<String, Object>> table3 = content.get("table3Content");
+        List<Map<String, Object>> keys1 = content.get("table1Keys");
+        List<Map<String, Object>> keys2 = content.get("table2Keys");
+        List<Map<String, Object>> keys3 = content.get("table3Keys");
+
+        String table1PrimaryKeyColumnName;
+        String table2PrimaryKeyColumnName;
+        String table3PrimaryKeyColumnName;
+        String table3ForeignKeyColumnName;
+
+        String table1Name = this.databaseConfig.getTable1();
+        String table2Name = this.databaseConfig.getTable2();
+        String table3Name = this.databaseConfig.getTable3();
+
+        table1PrimaryKeyColumnName = keys1.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table1Name + " is: {}", table1PrimaryKeyColumnName);
+
+        table2PrimaryKeyColumnName = keys2.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table2Name + " is: {}", table2PrimaryKeyColumnName);
+
+        table3PrimaryKeyColumnName = keys3.get(0).get("Column_name").toString();
+        log.info("The primary key name in " + table3Name + " is: {}", table3PrimaryKeyColumnName);
+
+        table3ForeignKeyColumnName = keys3.get(1).get("Column_name").toString();
+        log.info("The foreign key name in " + table3Name + " is: {}", table3ForeignKeyColumnName);
+
+        for (int i = 0; i < table2.size(); i++) {
+            List<Map<String, Object>> tableRecordMap = new ArrayList<>();
+            String primaryKeyValue = table2.get(i).get(table2PrimaryKeyColumnName).toString();
+
+            for (Map<String, Object> table3Row : table3) {
+
+                if (primaryKeyValue.equals(table3Row.get(table3ForeignKeyColumnName).toString())) {
+                    log.info("Match between " + table1Name + " and " + table2Name + " has been found");
+
+                    Map<String, Object> newTableRecord = new HashMap<>();
+
+                    for (Map.Entry<String, Object> entry : table3Row.entrySet()) {
+                        if (!entry.getKey().equals(table3ForeignKeyColumnName)) {
+                            newTableRecord = table1.get((Integer.parseInt(entry.getValue().toString())) - 1);
+                        }
+                    }
+                    tableRecordMap.add(newTableRecord);
+                }
+                table2.get(i).put(table1Name, tableRecordMap);
+            }
+            log.info(table1Name + " list is: {}", table2);
+        }
+
+        for (Map<String, Object> tableRow : table2) {
+            tableRow.remove(table2PrimaryKeyColumnName);
+        }
+
+        return table2;
     }
 }
