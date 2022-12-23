@@ -23,6 +23,11 @@ dependencies {
 //	Spring Boot Starter Web for REST API creation
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+//	Faker Library
+	implementation ('com.github.javafaker:javafaker:1.0.2'){
+		exclude group: 'org.yaml', module: 'snakeyaml'
+	}
+
 //	JDBC and MySQL
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java'

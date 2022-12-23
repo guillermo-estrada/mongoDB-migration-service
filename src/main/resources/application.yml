@@ -5,9 +5,9 @@ server:
 #Database Configuration
 spring:
   datasource:
-#    database: hexaware
-#    table1: department
-#    table2: employee
+    database: hexaware
+    table1: department
+    table2: employee
 #    database: jails
 #    table1: jail
 #    table2: prisoner
@@ -15,10 +15,13 @@ spring:
 #    table1: country
 #    table2: citizen
 #    database: JailDepartmentOfTheWorld
-    database: school
-    table1: student
-    table2: course
-    table3: coursemembership
+#    table1: department
+#    table2: employee
+#    table3: country
+#    database: school
+#    table1: student
+#    table2: course
+#    table3: coursemembership
     url: jdbc:mysql://localhost:3306/${spring.datasource.database}
     username: root
     password: Password123
@@ -36,7 +39,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/${spring.datasource.database}
-#      uri: mongodb+srv://${spring.datasource.username}:${spring.datasource.password}@cluster0.m9onumq.mongodb.net/${spring.datasource.database}
+#      uri: mongodb+srv://${spring.datasource.username}:${spring.datasource.password}@cluster0.jdphsfx.mongodb.net/${spring.datasource.database}
       database: ${spring.datasource.database}
 
 #Active profile
