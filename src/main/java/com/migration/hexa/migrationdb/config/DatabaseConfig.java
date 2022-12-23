@@ -9,6 +9,7 @@ public class DatabaseConfig {
     String database;
     String table1;
     String table2;
+    String table3;
 
     public String getDatabase() {
         return database;
@@ -32,5 +33,13 @@ public class DatabaseConfig {
 
     public void setTable2(String table2) {
         this.table2 = table2;
+    }
+
+    public String getTable3() {
+        return table3;
+    }
+
+    public void setTable3(String table3) {
+        this.table3 = table3;
     }
 }
